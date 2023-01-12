@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
+
+use App\Models\CipoHirdetes;
 
 class CipoHirdetesController extends Controller
 {
@@ -13,7 +14,8 @@ class CipoHirdetesController extends Controller
      */
     public function index()
     {
-        //
+        $m = CipoHirdetes::all();
+        return view('cipohirdetes.view',['adat' => $m]);
     }
 
     /**
