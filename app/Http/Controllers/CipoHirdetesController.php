@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\CipoHirdetes;
+use App\Http\Requests\StoreCipohirdetesRequest;
+use App\Http\Requests\UpdateCipHirdetesRequest;
 
 class CipoHirdetesController extends Controller
 {
@@ -15,7 +17,7 @@ class CipoHirdetesController extends Controller
     public function index()
     {
         $m = CipoHirdetes::all();
-        return view('cipohirdetes.view',['adat' => $m]);
+        return view('cipohirdetes.index',['adat' => $m]);
     }
 
     /**
@@ -25,7 +27,7 @@ class CipoHirdetesController extends Controller
      */
     public function create()
     {
-        //
+        return view('cipohirdetes.create');
     }
 
     /**
@@ -34,9 +36,11 @@ class CipoHirdetesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCipohirdetesRequest $request)
     {
-        //
+        $s = $request->validated();
+        CipoHirdetes::create($s);
+        $this->create();
     }
 
     /**
@@ -47,7 +51,8 @@ class CipoHirdetesController extends Controller
      */
     public function show($id)
     {
-        //
+        $m = CipoHirdetes::findOrFail($id);
+        return view('cipohirdetes.show',['adat' => $m]);
     }
 
     /**
@@ -58,7 +63,8 @@ class CipoHirdetesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $m = CipoHirdetes::findOrFail($id);
+        return view('cipohirdetes.edit',['adat' => $m]);
     }
 
     /**
@@ -68,9 +74,12 @@ class CipoHirdetesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCipHirdetesRequest $request, $id)
     {
-        //
+        $m = CipoHirdetes::findOrFail($id);
+        $d = $request->validated();
+        $m->update($d);
+        $this->show($id);
     }
 
     /**
@@ -81,6 +90,8 @@ class CipoHirdetesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $m = CipoHirdetes::findOrFail($id);
+        $m->delete();
+        $this->index();
     }
 }
